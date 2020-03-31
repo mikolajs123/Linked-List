@@ -8,12 +8,13 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <time.h>
 
 struct Node
 {
     int data;
     struct Node *next;
-} *first = NULL;
+} *first = NULL, *second = NULL;;
 
 void create (int A[], int n)
 {
@@ -163,8 +164,8 @@ void append(struct Node **p, int x)
     new_node->next = NULL;
     if (*p == NULL)
     {
-       *p = new_node;
-       return;
+        *p = new_node;
+        return;
     }
     while (last->next != NULL)
         last = last->next;
@@ -232,31 +233,60 @@ void Delete (struct Node *p, int index)
 
 void display (struct Node * p)
 {
-    while (p != NULL) {
-        printf("%d ", p->data);
-        p = p->next;
+    if(p == NULL)
+    {
+        printf(" List is empty.");
     }
+    else
+    {
+        while (p != NULL) {
+            printf("%d\n", p->data);
+            p = p->next;
+        }
+    }
+}
+
+int random_in_range (int min, int max)
+{
+    int range = (max - min) + 1;
+    int result = min + rand() % range;
+    return result;
+}
+
+void generate_random_array_from_range (struct Node **p, int min, int max, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        append(p, random_in_range(min, max));
+    }
+    return;
 }
 
 int main(int argc, const char * argv[]) {
     
+    srand(static_cast<unsigned int>(time(nullptr)));
     int A[] = {3, 5, 7, 10, 15, 12};
     create(A, 6);
-    printf("count: %d\n", count(first));
-    printf("sum: %d\n", sum(first));
-    printf("max: %d\n", max(first));
-    printf("min: %d\n", min(first));
-    printf("linear search: %d\n", linear_search(first, 12));
     display(first);
     insert(first, 4, 9);
     unshift(&first, 33);
     unshift(&first, 34);
     append(&first, 71);
     append(&first, 101);
+    printf("count: %d\n", count(first));
+    printf("sum: %d\n", sum(first));
+    printf("max: %d\n", max(first));
+    printf("min: %d\n", min(first));
+    printf("linear search: %d\n", linear_search(first, 12));
     printf("\n");
-    Delete(first, 4);
+    Delete(first, 2);
     delete_(first);
     _delete(first);
     display(first);
+    generate_random_array_from_range(&second, 0, 10000, 100);
+    append(&second, -101);
+    printf("\nsecond goes here\n");
+    display(second);
+    display(second);
     return 0;
 }
